@@ -6,8 +6,8 @@ import { addIndexedArgsToEvent, useDeployedContractInfo } from "~~/hooks/scaffol
 import { ContractAbi, ContractName, UseScaffoldEventConfig } from "~~/utils/scaffold-eth/contract";
 
 /**
- * Wrapper around wagmi's useEventSubscriber hook which automatically loads (by name) the contract ABI and
- * address from the contracts present in deployedContracts.ts & externalContracts.ts
+ * Wrapper for wagmi's useContractEvent which automatically loads (by name)
+ * the contract ABI and address from the deployed contracts.
  * @param config - The config settings
  * @param config.contractName - deployed contract name
  * @param config.eventName - name of the event to listen for
@@ -24,9 +24,9 @@ export const useScaffoldEventSubscriber = <
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
   const { targetNetwork } = useTargetNetwork();
 
-  const addIndexedArgsToLogs = (logs: Log[]) => logs.map(addIndexedArgsToEvent);
+  const addInexedArgsToLogs = (logs: Log[]) => logs.map(addIndexedArgsToEvent);
   const listenerWithIndexedArgs = (logs: Log[]) =>
-    listener(addIndexedArgsToLogs(logs) as Parameters<typeof listener>[0]);
+    listener(addInexedArgsToLogs(logs) as Parameters<typeof listener>[0]);
 
   return useContractEvent({
     address: deployedContractData?.address,

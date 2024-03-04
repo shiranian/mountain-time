@@ -35,13 +35,13 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
     color: "#92D9FA",
     nativeCurrencyTokenAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
   },
-  [chains.optimismSepolia.id]: {
+  [chains.optimismGoerli.id]: {
     color: "#f01a37",
   },
   [chains.optimism.id]: {
     color: "#f01a37",
   },
-  [chains.arbitrumSepolia.id]: {
+  [chains.arbitrumGoerli.id]: {
     color: "#28a0f0",
   },
   [chains.arbitrum.id]: {
@@ -59,7 +59,8 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
 };
 
 /**
- * Gives the block explorer transaction URL, returns empty string if the network is a local chain
+ * Gives the block explorer transaction URL.
+ * Returns empty string if the network is a local chain
  */
 export function getBlockExplorerTxLink(chainId: number, txnHash: string) {
   const chainNames = Object.keys(chains);

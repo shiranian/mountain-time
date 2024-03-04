@@ -1,4 +1,4 @@
-import { useTheme } from "next-themes";
+import { useDarkMode } from "usehooks-ts";
 import { useNetwork, useSwitchNetwork } from "wagmi";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
 import { getNetworkColor } from "~~/hooks/scaffold-eth";
@@ -11,10 +11,9 @@ type NetworkOptionsProps = {
 };
 
 export const NetworkOptions = ({ hidden = false }: NetworkOptionsProps) => {
+  const { isDarkMode } = useDarkMode();
   const { switchNetwork } = useSwitchNetwork();
   const { chain } = useNetwork();
-  const { resolvedTheme } = useTheme();
-  const isDarkMode = resolvedTheme === "dark";
 
   return (
     <>

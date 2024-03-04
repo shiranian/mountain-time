@@ -18,8 +18,9 @@ export class BurnerConnector extends Connector<StaticJsonRpcProvider, BurnerConn
   readonly ready = true;
 
   private provider?: StaticJsonRpcProvider;
-
-  // store for getWallet()
+  /**
+   * this is the store for getWallet()
+   */
   private burnerWallet: WalletClient<HttpTransport, Chain, PrivateKeyAccount> | undefined;
 
   constructor(config: { chains?: Chain[]; options: BurnerConnectorOptions }) {
@@ -38,11 +39,11 @@ export class BurnerConnector extends Connector<StaticJsonRpcProvider, BurnerConn
   async getWalletClient(config?: { chainId?: number | undefined } | undefined) {
     const chain = this.getChainFromId(config?.chainId);
     if (!this.burnerWallet) {
-      const burnerAccount = privateKeyToAccount(loadBurnerSK());
+      const bunerAccount = privateKeyToAccount(loadBurnerSK());
 
       const client = createWalletClient({
         chain: chain,
-        account: burnerAccount,
+        account: bunerAccount,
         transport: http(),
       });
       this.burnerWallet = client;

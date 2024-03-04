@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { createWalletClient, http, parseEther } from "viem";
 import { hardhat } from "viem/chains";

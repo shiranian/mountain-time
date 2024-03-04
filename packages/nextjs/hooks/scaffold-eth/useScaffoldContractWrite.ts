@@ -2,22 +2,21 @@ import { useState } from "react";
 import { useTargetNetwork } from "./useTargetNetwork";
 import { Abi, ExtractAbiFunctionNames } from "abitype";
 import { useContractWrite, useNetwork } from "wagmi";
+import { getParsedError } from "~~/components/scaffold-eth";
 import { useDeployedContractInfo, useTransactor } from "~~/hooks/scaffold-eth";
-import { getParsedError, notification } from "~~/utils/scaffold-eth";
+import { notification } from "~~/utils/scaffold-eth";
 import { ContractAbi, ContractName, UseScaffoldWriteConfig } from "~~/utils/scaffold-eth/contract";
 
 type UpdatedArgs = Parameters<ReturnType<typeof useContractWrite<Abi, string, undefined>>["writeAsync"]>[0];
 
 /**
- * Wrapper around wagmi's useContractWrite hook which automatically loads (by name) the contract ABI and address from
- * the contracts present in deployedContracts.ts & externalContracts.ts corresponding to targetNetworks configured in scaffold.config.ts
+ * Wrapper for wagmi's useContractWrite hook (with config prepared by usePrepareContractWrite hook)
+ * which automatically loads (by name) the contract ABI and address from the deployed contracts
  * @param config - The config settings, including extra wagmi configuration
- * @param config.contractName - contract name
+ * @param config.contractName - deployed contract name
  * @param config.functionName - name of the function to be called
  * @param config.args - arguments for the function
  * @param config.value - value in ETH that will be sent with transaction
- * @param config.blockConfirmations - number of block confirmations to wait for (default: 1)
- * @param config.onBlockConfirmation - callback that will be called after blockConfirmations.
  */
 export const useScaffoldContractWrite = <
   TContractName extends ContractName,

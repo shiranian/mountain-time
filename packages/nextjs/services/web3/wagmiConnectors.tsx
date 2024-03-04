@@ -62,7 +62,7 @@ const wallets = [
         }),
       ]
     : []),
-  safeWallet({ ...walletsOptions }),
+  safeWallet({ ...walletsOptions, debug: false, allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/] }),
 ];
 
 /**

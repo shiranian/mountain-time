@@ -1,6 +1,5 @@
 import {
   Abi,
-  AbiParameter,
   AbiParameterToPrimitiveType,
   AbiParametersToPrimitiveTypes,
   ExtractAbiEvent,
@@ -24,34 +23,17 @@ import deployedContractsData from "~~/contracts/deployedContracts";
 import externalContractsData from "~~/contracts/externalContracts";
 import scaffoldConfig from "~~/scaffold.config";
 
-type AddExternalFlag<T> = {
-  [ChainId in keyof T]: {
-    [ContractName in keyof T[ChainId]]: T[ChainId][ContractName] & { external?: true };
-  };
-};
-
-const deepMergeContracts = <L extends Record<PropertyKey, any>, E extends Record<PropertyKey, any>>(
-  local: L,
-  external: E,
+const deepMergeContracts = <D extends Record<PropertyKey, any>, S extends Record<PropertyKey, any>>(
+  destination: D,
+  source: S,
 ) => {
   const result: Record<PropertyKey, any> = {};
-  const allKeys = Array.from(new Set([...Object.keys(external), ...Object.keys(local)]));
+  const allKeys = Array.from(new Set([...Object.keys(source), ...Object.keys(destination)]));
   for (const key of allKeys) {
-    if (!external[key]) {
-      result[key] = local[key];
-      continue;
-    }
-    const amendedExternal = Object.fromEntries(
-      Object.entries(external[key] as Record<string, Record<string, unknown>>).map(([contractName, declaration]) => [
-        contractName,
-        { ...declaration, external: true },
-      ]),
-    );
-    result[key] = { ...local[key], ...amendedExternal };
+    result[key] = { ...destination[key], ...source[key] };
   }
-  return result as MergeDeepRecord<AddExternalFlag<L>, AddExternalFlag<E>, { arrayMergeMode: "replace" }>;
+  return result as MergeDeepRecord<D, S, { arrayMergeMode: "replace" }>;
 };
-
 const contractsData = deepMergeContracts(deployedContractsData, externalContractsData);
 
 export type InheritedFunctions = { readonly [key: string]: string };
@@ -60,7 +42,6 @@ export type GenericContract = {
   address: Address;
   abi: Abi;
   inheritedFunctions?: InheritedFunctions;
-  external?: true;
 };
 
 export type GenericContractsDeclaration = {
@@ -291,5 +272,3 @@ export type UseScaffoldEventHistoryData<
       }[]
     >
   | undefined;
-
-export type AbiParameterTuple = Extract<AbiParameter, { type: "tuple" | `tuple[${string}]` }>;

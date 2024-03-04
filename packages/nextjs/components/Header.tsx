@@ -1,10 +1,8 @@
-"use client";
-
 import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
+import { Bars3Icon, BugAntIcon, CircleStackIcon, LinkIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -20,19 +18,29 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/",
   },
   {
-    label: "Debug Contracts",
+    label: "Contract Playground",
     href: "/debug",
     icon: <BugAntIcon className="h-4 w-4" />,
+  },
+  {
+    label: "Polygon Scan",
+    href: "https://polygonscan.com/address/0x1c14FF8D688E7Bd1BeD51bCad74fa4f248868C86", // the link changes on deploy
+    icon: <LinkIcon className="h-4 w-4" />,
+  },
+  {
+    label: "OpenSea Collection",
+    href: "https://opensea.io/collection/m345123",
+    icon: <CircleStackIcon className="h-4 w-4" />,
   },
 ];
 
 export const HeaderMenuLinks = () => {
-  const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <>
       {menuLinks.map(({ label, href, icon }) => {
-        const isActive = pathname === href;
+        const isActive = router.pathname === href;
         return (
           <li key={href}>
             <Link
@@ -93,8 +101,7 @@ export const Header = () => {
             <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-ETH</span>
-            <span className="text-xs">Ethereum dev stack</span>
+            <span className="font-bold leading-tight">Shiran`&apos;`s NFT Collection</span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
